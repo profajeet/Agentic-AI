@@ -27,7 +27,24 @@ async def main():
                     # Ensure your start your weather server on port 8000
                     "url": "http://localhost:8000/sse",
                     "transport": "sse",
-                }
+                },
+                "postgresql": {
+            "command": "npx",
+            "args": [
+                "-y",
+                "@executeautomation/database-server",
+                "--postgresql", 
+                "--host",
+                "localhost",
+                "--database",
+                "postgres",
+                "--user",
+                "postgres",
+                "--password",
+                "root"
+            ],
+            # "transport":"sse"
+        }
             }
         ) as client:
             agent = create_react_agent(
@@ -36,18 +53,6 @@ async def main():
                 prompt="You are an AI assistant that strictly responds only based on the available tools. If the input requires information or actions beyond the capabilities of the tools, ask the user for the necessary details until you have complete input to proceed.",
                 checkpointer=checkpointer
             )
-            # math_response = await agent.ainvoke(
-            #     {"messages": [{"role": "user", "content": "what's (3 + 5) x 12?"}]}
-            # )
-            # weather_response = await agent.ainvoke(
-            #     {"messages": [{"role": "user", "content": "what is the weather in nyc?"}]}
-            # )
-            # # print(math_response)
-            # # print(weather_response)
-            # for m in math_response['messages']:
-            #       m.pretty_print()
-            # for m in weather_response['messages']:
-            #       m.pretty_print()
 
             while True:
                 user_input = input("Enter your query (type 'quit' to exit): ")
